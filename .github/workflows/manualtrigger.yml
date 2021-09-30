@@ -1,5 +1,5 @@
 
-name: CI
+name: Manualtrigger
 
 # Controls when the workflow will run
 on:
