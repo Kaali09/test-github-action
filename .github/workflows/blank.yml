@@ -37,3 +37,20 @@ jobs:
 
       - name: Run a custom script
         run: ./scripts/test.sh
+
+      - uses: danielr1996/kubectl-action@1.0.0
+        name: Deploy
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          args: kubectl get ns
+
+
+        # - uses: azure/k8s-set-context@v1
+        #   with:
+        #     method: kubeconfig
+        #     kubeconfig: ${{ secrets.KUBECONFIG }} # Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+        #     context: confluent  #If left unspecified, current-context from kubeconfig is used as default
+        #   id: setcontext
+
+
+
