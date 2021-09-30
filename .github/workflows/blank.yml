@@ -42,7 +42,7 @@ jobs:
         name: Deploy
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
-          run: kubectl get ns
+          args: get ns
 
 
         # - uses: azure/k8s-set-context@v1
