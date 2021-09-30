@@ -35,7 +35,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       
-      - uses: kaali09/canary-action@v1       
+      - uses: kaali09/canary-action@v2
         name: run a custom script
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
