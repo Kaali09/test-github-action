@@ -39,7 +39,7 @@ jobs:
         name: run a custom script
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
-          namespace: ${{ inputs.namespace }}
+          namespace: confluent
           args: confluent
 
 
