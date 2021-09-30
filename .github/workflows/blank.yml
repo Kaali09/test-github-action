@@ -35,14 +35,17 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - name: Run a custom script
-        run: ./scripts/test.sh
 
-      - uses: danielr1996/kubectl-action@1.0.0
-        name: Deploy
-        with:
-          kubeconfig: ${{ secrets.KUBECONFIG }}
-          args: get ns
+          # - uses: danielr1996/kubectl-action@1.0.0
+          #   name: Deploy
+          #   with:
+          #     kubeconfig: ${{ secrets.KUBECONFIG }}
+          #     args: get ns
+
+      - name: Run custom scripts
+        run: sh ./scripts/test.sh
+        env:
+          kube_config: ${{ secrets.KUBECONFIG }}
 
 
         # - uses: azure/k8s-set-context@v1
