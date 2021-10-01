@@ -24,5 +24,5 @@ jobs:
         name: bounce the canary deployment
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
-          namespace: confluent
+          #namespace: confluent
           args: ${{ github.event.inputs.namespace }}
