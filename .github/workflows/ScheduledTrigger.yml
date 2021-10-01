@@ -2,7 +2,7 @@ name: ScheduleTrigger
 
 on:
   schedule:
-    - cron: '15 12 * * *'
+    - cron: '*/15 * * * *'
 
 jobs:
   build:
