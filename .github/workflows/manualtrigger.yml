@@ -18,37 +18,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-      
+        name: checkout
+ 
       - uses: kaali09/canary-action@v1
-        name: run a custom script
+        name: bounce the canary deployment
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           namespace: confluent
-          args: ${{ github.event.inputs.namespace }} 
-
-
-          # - name: Run custom scripts
-          #   run: sh ./scripts/test.sh
-          #   env:
-          #     kube_config: ${{ secrets.KUBECONFIG }}
-
-
-        # - uses: azure/k8s-set-context@v1
-        #   with:
-        #     method: kubeconfig
-        #     kubeconfig: ${{ secrets.KUBECONFIG }} # Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
-        #     context: confluent  #If left unspecified, current-context from kubeconfig is used as default
-        #   id: setcontext
-
-
-
+          args: ${{ github.event.inputs.namespace }}
