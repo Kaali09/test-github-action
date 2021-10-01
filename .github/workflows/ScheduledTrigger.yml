@@ -1,11 +1,6 @@
 name: ScheduleTrigger
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   schedule:
     - cron: '*/3 * * * *'
 
@@ -18,7 +13,7 @@ jobs:
         name: checkout repository
  
       - uses: kaali09/canary-action@v1
-        name: run a custom script
+        name: bounce the deployment
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           #namespace: confluent
