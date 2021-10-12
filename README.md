@@ -1,2 +1,2 @@
 # test-github-action
-test-github-test-test
+test-github
