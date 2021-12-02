@@ -29,7 +29,7 @@ runs:
       shell: bash
     - id: clusters
       run: |
-        echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples)"
+        echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples)" | awk -F"/" '{print $1}'
         echo "::set-output name=test-msg::$(echo "Hello kali")"
         echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
         echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
