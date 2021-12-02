@@ -37,5 +37,7 @@ runs:
       shell: bash
     - run: echo ${{ steps.clusters.outputs.new-all }}
       shell: bash
+    - run: echo random ${{ steps.random-number-generator.outputs.filesNo }}
+      shell: bash
 
         #    echo "::set-output name=update::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -iv new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
