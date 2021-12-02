@@ -9,6 +9,12 @@ outputs:
   copied-files: 
     description: "Number of files copied"
     value: ${{ steps.random-number-generator.outputs.filesNo }}
+  new-all:
+    value: ${{ steps.clusters.outputs.new-all }}
+  new-dev:
+    value: ${{ steps.clusters.outputs.new-dev }}
+  new-test:
+    value: ${{ steps.clusters.outputs.new-test }}
 runs:
   using: "composite"
   steps: 
@@ -19,3 +25,10 @@ runs:
       shell: bash
     - run: ${{ github.action_path }}/CopyFiles.sh
       shell: bash
+    - id: clusters
+      run: |
+        echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+        echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+        echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+
+        #    echo "::set-output name=update::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -iv new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
