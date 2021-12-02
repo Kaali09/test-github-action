@@ -16,4 +16,4 @@ jobs:
         destinationFolder: '/whatever/folder'
     - run: echo Files copied ${{ steps.myCompositeAction.outputs.copied-files }} 
       shell: bash
-    - run: echo ${{ steps.myCompositeAction.outputs.new-all }}
+    - run: echo ${{ steps.myCompositeAction.outputs.newall }}
