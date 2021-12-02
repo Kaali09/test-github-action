@@ -1,0 +1,20 @@
+name: ScheduleTrigger
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout repository
+ 
+      - uses: kaali09/canary-action@v1
+        name: bounce the deployment
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          #namespace: confluent
+          args: ""

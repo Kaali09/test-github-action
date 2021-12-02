@@ -1,0 +1,26 @@
+name: ManualTrigger
+
+on:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      namespace:
+        description: 'namespace to bounce all deployments'
+        required: true
+        default: 'canary'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout
+ 
+      - uses: kaali09/canary-action@v1
+        name: bounce the canary deployment
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          #namespace: confluent
+          args: ${{ github.event.inputs.namespace }}
