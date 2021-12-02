@@ -14,7 +14,7 @@ jobs:
       uses: eg-stream-platform/gh-composite-action-test@master
       with:
         destinationFolder: '/whatever/folder'
-    - run: echo Files copied ${{ steps.myCompositeAction.outputs.copied-files }} 
+    - run: echo Files copied ${{ steps.myCompositeAction.outputs.copied-files }}
       shell: bash
-    - run: echo cluster env name is ${{ steps.myCompositeAction.outputs.newall }}
+    - run: echo cluster env  ${{ steps.myCompositeAction.outputs.newall }}
       shell: bash
