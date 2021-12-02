@@ -34,5 +34,7 @@ runs:
         echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
         echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
       shell: bash
+    - run: echo ${{ steps.clusters.outputs.new-all }}
+      shell: bash
 
         #    echo "::set-output name=update::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -iv new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
