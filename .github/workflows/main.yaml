@@ -7,7 +7,7 @@ on: [workflow_dispatch]
 jobs:
   copy_files_job:
     runs-on: eg-default
-    name: A job that copy files
+    name: CompositeAction Test
     steps:
     - uses: actions/checkout@v2
     - id: myCompositeAction
@@ -16,5 +16,5 @@ jobs:
         destinationFolder: '/whatever/folder'
     - run: echo Files copied ${{ steps.myCompositeAction.outputs.copied-files }} 
       shell: bash
-    - run: echo ${{ steps.myCompositeAction.outputs.newall }}
+    - run: echo cluster env name is ${{ steps.myCompositeAction.outputs.newall }}
       shell: bash
