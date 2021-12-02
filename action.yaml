@@ -1,0 +1,41 @@
+name: 'File Copy'
+description: 'Pretends to copy some files and return the number of files copied'
+inputs:
+  destinationFolder:  # path
+    description: 'The folder to copy the files to'
+    required: true
+    default: '~'
+outputs:
+  copied-files: 
+    description: "Number of files copied"
+    value: ${{ steps.random-number-generator.outputs.filesNo }}
+  newall:
+    value: ${{ steps.clusters.outputs.new-all }}
+  newdev:
+    value: ${{ steps.clusters.outputs.new-dev }}
+  newtest:
+    value: ${{ steps.clusters.outputs.new-test }}
+  testmessage:
+    value: ${{ steps.clusters.outputs.test-msg }}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - run: ${{ github.action_path }}/ExecuteSomething.sh
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=filesNo::$(echo $RANDOM)"
+      shell: bash
+    - run: ${{ github.action_path }}/CopyFiles.sh
+      shell: bash
+    - id: clusters
+      run: |
+        echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | awk -F"/" '{print $1}')"
+        echo "::set-output name=test-msg::$(echo "Hello kali")"
+        echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+        echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+      shell: bash
+    - run: echo ${{ steps.clusters.outputs.new-all }}
+      shell: bash
+
+        #    echo "::set-output name=update::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -iv new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
