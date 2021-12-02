@@ -19,7 +19,8 @@ outputs:
     value: ${{ steps.clusters.outputs.test-msg }}
 runs:
   using: "composite"
-  steps: 
+  steps:
+    - uses: actions/checkout@v2
     - run: ${{ github.action_path }}/ExecuteSomething.sh
       shell: bash
     - id: random-number-generator
