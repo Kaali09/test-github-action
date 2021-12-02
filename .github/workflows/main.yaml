@@ -6,7 +6,7 @@ on: [workflow_dispatch]
 
 jobs:
   copy_files_job:
-    runs-on: ubuntu-latest
+    runs-on: eg-default
     name: A job that copy files
     steps:
     - uses: actions/checkout@v2
