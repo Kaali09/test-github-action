@@ -9,11 +9,11 @@ outputs:
   copied-files: 
     description: "Number of files copied"
     value: ${{ steps.random-number-generator.outputs.filesNo }}
-  new-all:
+  newall:
     value: ${{ steps.clusters.outputs.new-all }}
-  new-dev:
+  newdev:
     value: ${{ steps.clusters.outputs.new-dev }}
-  new-test:
+  newtest:
     value: ${{ steps.clusters.outputs.new-test }}
 runs:
   using: "composite"
