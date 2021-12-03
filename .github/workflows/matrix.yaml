@@ -1,0 +1,46 @@
+name: Dispatch Listener
+
+on:
+  repository_dispatch:
+    types:
+      - 'test run'
+      - 'test::*'
+
+jobs:
+  # ------------------------
+  say_hello:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.generate-matrix.outputs.services }}
+      versions: ${{ steps.generate-matrix.outputs.versions }}
+    steps:
+      - name: Generate Matrix
+        id: generate-matrix
+        run: |
+          SERVICES='${{ toJSON(github.event.client_payload.services) }}'
+          echo ::set-output name=services::${SERVICES}
+          VERSIONS='${{ toJSON(github.event.client_payload.versions) }}'
+          echo ::set-output name=versions::${VERSIONS}
+  # ------------------------
+  my_echo:
+    runs-on: ubuntu-latest
+    needs:
+      - say_hello
+    steps:
+      - name: Echo previous outputs
+        run: echo "${{ toJSON(needs.say_hello.outputs) }}"
+  # ------------------------
+  my_matrix:
+    runs-on: ubuntu-latest
+    needs:
+      - my_echo
+      - say_hello
+    strategy:
+      matrix:
+        service:'${{ fromJSON(needs.say_hello.outputs.services) }}'
+        version:'${{ fromJSON(needs.say_hello.outputs.versions) }}'
+    steps:
+      - name: Matrix => (${{ matrix.service }} ${{ matrix.version}})
+        run: |
+          echo ${{ matrix.service }}
+          echo ${{ matrix.version }}

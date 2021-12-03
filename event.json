@@ -1,0 +1,7 @@
+{
+  "event_type": "test::something",
+  "client_payload": {
+    "services": ["Terraform", "Waypoint", "Consul", "Vault"],
+    "versions": [0, 1, 2, 3]
+  }
+}
