@@ -45,13 +45,13 @@ jobs:
           echo ${{ matrix.service }}
           echo ${{ matrix.version }}
 
-  # --------------------------
-  ${{ matrix.service }}:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: ${{ fromJSON(needs.say_hello.outputs.services) }}
-    steps:
-      - name: Matrix
-        run: echo hi kali
+          ## --------------------------
+          #${{ matrix.service }}:
+          #  runs-on: ubuntu-latest
+          #  strategy:
+          #    matrix:
+          #      service: ${{ fromJSON(needs.say_hello.outputs.services) }}
+          #  steps:
+          #    - name: Matrix
+          #      run: echo hi kali
 

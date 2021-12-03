@@ -1,0 +1,80 @@
+
+name: debug
+
+# Controls when the action will run. Triggers the workflow on push that updates a docker VERSION
+# or pull request events for the master branch
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches: [ master ]
+
+env:
+  ENVIRONMENT: dev
+
+jobs:
+  directories:
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      new-all: ${{ steps.clusters.outputs.new-all }}
+      new-dev: ${{ steps.clusters.outputs.new-dev }}
+      new-test: ${{ steps.clusters.outputs.new-test }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - id: clusters
+        run: |
+          echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+          echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+          echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+      - name: Checking Components and Dirs
+        run: |
+          echo "All new files: ${{ steps.clusters.outputs.new-all }}"
+          echo "Dev new files: ${{ steps.clusters.outputs.new-dev }}"
+          echo "Test new files: ${{ steps.clusters.outputs.new-test }}"
+
+  commit-info:
+    needs: [ directories ] 
+    name: Gathering commit information
+    runs-on: ubuntu-latest
+    if: ${{ needs.directories.outputs.new-all != '[]' }}
+    outputs:
+      envi_name: ${{ steps.install_env.outputs.env_name }}
+      cluster_name: ${{ steps.generate_cluster_name.outputs.cluster }}
+      is_cluster_name_generated: ${{ steps.is_generated.outputs.generated }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checking for the installation envs
+        id: install_env
+        run: |
+          if [[ ${{ needs.directories.outputs.new-all }} == *"egdp-dev"* ]]; then
+              echo "::set-output name=is_dev_install::yes"
+              echo "::set-output name=env_name::dev"
+          fi
+          if [[ ${{ needs.directories.outputs.new-all }} == *"egdp-test"* ]]; then
+              echo "::set-output name=is_test_install::yes"
+          fi
+      - name: Checking the install envs
+        run: |
+          echo "Checking dev: ${{ steps.install_env.outputs.is_dev_install }}"
+          echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
+  
+  new-cluster-dev:
+    needs: [ directories, commit-info ] 
+    name: ${{ needs.commit-info.output.envi_name }}
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      contains( needs.directories.outputs.new-dev, 'egdp-dev' )
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: debug vars
+        run: echo cluster env is ==> {{ needs.commit-info.output.envi_name }}
