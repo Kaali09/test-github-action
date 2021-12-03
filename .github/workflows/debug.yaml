@@ -78,4 +78,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: debug vars
-        run: echo cluster env is ==> {{ needs.commit-info.outputs.envi_name }}
+        run: echo cluster env is ==> ${{ needs.commit-info.outputs.envi_name }}
