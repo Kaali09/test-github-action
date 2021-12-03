@@ -92,3 +92,5 @@ jobs:
       uses: actions/checkout@v1
     - name: debug vars
       run: echo "Hi kali , you test is passed"
+    - name: debug env
+      run: env
