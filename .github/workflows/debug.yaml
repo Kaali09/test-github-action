@@ -64,6 +64,7 @@ jobs:
         run: |
           echo "Checking dev: ${{ steps.install_env.outputs.is_dev_install }}"
           echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
+          echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
   
   new-cluster-dev:
     needs: [ directories, commit-info ] 
@@ -77,4 +78,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: debug vars
-        run: echo cluster env is ==> {{ needs.commit-info.output.envi_name }}
+        run: echo cluster env is ==> {{ needs.commit-info.outputs.envi_name }}
