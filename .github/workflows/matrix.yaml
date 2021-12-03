@@ -37,8 +37,8 @@ jobs:
       - say_hello
     strategy:
       matrix:
-        service:'${{ fromJSON(needs.say_hello.outputs.services) }}'
-        version:'${{ fromJSON(needs.say_hello.outputs.versions) }}'
+        service: ${{ fromJSON(needs.say_hello.outputs.services) }}
+        version: ${{ fromJSON(needs.say_hello.outputs.versions) }}
     steps:
       - name: Matrix => (${{ matrix.service }} ${{ matrix.version}})
         run: |
