@@ -83,7 +83,7 @@ jobs:
   provisionDev:
     name: Provision dev
     runs-on: ubuntu-latest
-    needs: functionalTestsStaging
+    needs: new-cluster-dev
     environment:
       name: veera.dev
     steps:
