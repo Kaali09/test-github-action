@@ -40,6 +40,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: echo commit sha
+        run: echo The commit sha is ${{ github.event.pull_request.head.sha }}
 
   commit-info:
     needs: [ directories ] 
