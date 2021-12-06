@@ -43,14 +43,16 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: echo commit sha
         run: echo The commit sha is ${{ github.event.pull_request.head.sha }}
-      - name: Changed Files Exporter
-        id: files-tracker
-        uses: umani/changed-files@v3.3.0
-        with:
-          repo-token: ${{ github.token }}
-          pattern: '^.*\.(md|markdown)$'
-      - name: debug file track var
-        run: echo ${{ steps.files-tracker.outputs.files_updated }}
+          # - name: Changed Files Exporter
+          #   id: files-tracker
+          #   uses: umani/changed-files@v3.3.0
+          #   with:
+          #     repo-token: ${{ github.token }}
+          #     pattern: '^.*\.(md|markdown)$'
+          # - name: debug file track var
+          #   run: echo ${{ steps.files-tracker.outputs.files_updated }}
+      - name: debug
+        run: echo this base sha ${{ github.event.pull_request.base.sha }}
 
   commit-info:
     needs: [ directories ] 
