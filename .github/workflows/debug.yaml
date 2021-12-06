@@ -65,6 +65,10 @@ jobs:
           echo "Checking dev: ${{ steps.install_env.outputs.is_dev_install }}"
           echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
   
   new-cluster-dev:
     needs: [ directories, commit-info ] 
