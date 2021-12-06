@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - 'main'
-  pull_request:
-    branches: [ main ]
+        #  pull_request:
+        #branches: [ main ]
 
 env:
   ENVIRONMENT: dev
@@ -28,9 +28,9 @@ jobs:
           fetch-depth: 0
       - id: clusters
         run: |
-          echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
-          echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
-          echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+          echo "::set-output name=new-all::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.event.pull_request.head.sha }} |grep -i new |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+          echo "::set-output name=new-dev::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.event.pull_request.head.sha }} |grep -i new |grep -i egdp-dev |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
+          echo "::set-output name=new-test::$( git diff-tree --no-commit-id --name-only --diff-filter=ACMRT -r ${{ github.event.pull_request.head.sha }} |grep -i new |grep -i egdp-test |grep -iv ".github" |grep -iv .md |grep -iv images |grep -iv examples | jq -R -s -c 'split("\n")[:-1]')"
       - name: Checking Components and Dirs
         run: |
           echo "All new files: ${{ steps.clusters.outputs.new-all }}"
@@ -40,6 +40,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: echo commit sha
+        run: echo The commit sha is ${{ github.event.pull_request.head.sha }}
 
   commit-info:
     needs: [ directories ] 
@@ -69,10 +71,6 @@ jobs:
           echo "Checking dev: ${{ steps.install_env.outputs.is_dev_install }}"
           echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
   
   new-cluster-dev:
     needs: [ directories, commit-info ] 
