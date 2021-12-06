@@ -22,6 +22,7 @@ jobs:
       new-all: ${{ steps.clusters.outputs.new-all }}
       new-dev: ${{ steps.clusters.outputs.new-dev }}
       new-test: ${{ steps.clusters.outputs.new-test }}
+      fileTrack: ${{ steps.files-tracker.outputs.files_updated }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -42,6 +43,14 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: echo commit sha
         run: echo The commit sha is ${{ github.event.pull_request.head.sha }}
+      - name: Changed Files Exporter
+        id: files-tracker
+        uses: umani/changed-files@v3.3.0
+        with:
+          repo-token: ${{ github.token }}
+          pattern: '^.*\.(md|markdown)$'
+      - name: debug file track var
+        run: echo ${{ steps.files-tracker.outputs.files_updated }}
 
   commit-info:
     needs: [ directories ] 
