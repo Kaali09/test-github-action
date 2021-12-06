@@ -36,6 +36,10 @@ jobs:
           echo "All new files: ${{ steps.clusters.outputs.new-all }}"
           echo "Dev new files: ${{ steps.clusters.outputs.new-dev }}"
           echo "Test new files: ${{ steps.clusters.outputs.new-test }}"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
   commit-info:
     needs: [ directories ] 
