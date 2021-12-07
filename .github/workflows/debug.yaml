@@ -59,7 +59,7 @@ jobs:
     needs: [ directories ]
     name: Gathering commit information
     runs-on: ubuntu-latest
-    if: ${{ needs.directories.outputs.new-all != 'kali' }}
+    if: ${{ needs.directories.outputs.new-all = 'kali' }}
     outputs:
       envi_name: ${{ steps.install_env.outputs.env_name }}
       cluster_name: ${{ steps.generate_cluster_name.outputs.cluster }}
