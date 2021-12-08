@@ -59,10 +59,10 @@ jobs:
         run: echo this base sha ${{ github.event.pull_request.base.sha }}
 
   commit-info:
-    needs: [ directories ] 
+    needs: [ directories ]
     name: Gathering commit information
     runs-on: ubuntu-latest
-    if: ${{ needs.directories.outputs.new-all != '[]' }}
+    if: ${{ needs.directories.outputs.new-all == 'kali' }}
     outputs:
       envi_name: ${{ steps.install_env.outputs.env_name }}
       cluster_name: ${{ steps.generate_cluster_name.outputs.cluster }}
@@ -88,7 +88,7 @@ jobs:
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
   
   new-cluster-dev:
-    needs: [ directories, commit-info ] 
+    needs: [ directories, commit-info ]
     name: ${{ needs.commit-info.output.envi_name }}
     runs-on: ubuntu-latest
     if: |
