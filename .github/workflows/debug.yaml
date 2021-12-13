@@ -111,7 +111,7 @@ jobs:
     environment:
       name: veera.dev
     steps:
-    # Checkout
+    # Checkout task
     - name: Checkout
       uses: actions/checkout@v1
     - name: debug vars
