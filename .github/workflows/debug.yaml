@@ -98,8 +98,13 @@ jobs:
           echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
       - name: Echo the matrix
+        id: env_name_debug
         run: |
           echo "Env matrix is: ${{ matrix.example }}"
+          echo "::set-output name=env_names::$(awk -F'/' '{print $1}' ${{ matrix.example }})"
+      - name: echo env_names var
+        run: |
+          echo "Env_names are: ${{ steps.env_name_debug.outputs.env_names }}"
   
   new-cluster-dev:
     needs: [ directories, commit-info ]
