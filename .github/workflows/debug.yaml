@@ -4,23 +4,26 @@ name: debug
 # Controls when the action will run. Triggers the workflow on push that updates a docker VERSION
 # or pull request events for the master branch
 on:
-  #  push:
-  #    branches:
-  #      - 'main'
-  pull_request:
-    branches: [ main ]
-    types: [ closed ]
-    paths-ignore:
-      - README.md
-      - .gitignore
+  push:
+    branches:
+      - 'main'
+  #pull_request:
+  #  branches: [ main ]
+  #  types: [ closed ]
+  #  paths-ignore:
+  #    - README.md
+  #    - .gitignore
 
 env:
   ENVIRONMENT: dev
 
 jobs:
   directories:
-    if: github.event.pull_request.merged == true
+    #  if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: ${{fromJson(steps.outputs.new-all)}}
 
     outputs:
       new-all: ${{ steps.clusters.outputs.new-all }}
@@ -65,6 +68,7 @@ jobs:
       - name: debug
         run: echo this base sha ${{ github.event.pull_request.base.sha }}
 
+
   commit-info:
     needs: [ directories ]
     name: Gathering commit information
@@ -93,11 +97,14 @@ jobs:
           echo "Checking dev: ${{ steps.install_env.outputs.is_dev_install }}"
           echo "Checking test: ${{ steps.install_env.outputs.is_test_install }}"
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
+      - name: Echo the matrix
+        run: |
+          echo "Env matrix is: ${{ needs.directories.matrix.example }}
   
   new-cluster-dev:
     needs: [ directories, commit-info ]
     name: ${{ needs.commit-info.output.envi_name }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latestq
     if: |
       always() &&
       contains( needs.directories.outputs.new-dev, 'egdp-dev' )
