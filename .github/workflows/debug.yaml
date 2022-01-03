@@ -102,7 +102,7 @@ jobs:
         id: env_name_debug
         run: |
           echo "Env matrix is: ${{ matrix.example }}"
-          echo "::set-output name=env_names::$(echo ${{ matrix.example }} | awk -F'/' '{print $2}')"
+          echo "::set-output name=env_names::$(echo ${{ matrix.example }} | awk -F'/' '{print $2}') | jq  -R -s -c 'split("\n")[:-1]' "
       - name: echo env_names var
         run: |
           echo "Env_names are: ${{ steps.env_name_debug.outputs.env_names }}"
@@ -132,7 +132,7 @@ jobs:
     strategy:
       matrix:
         #cluster_env: ${{fromJson(needs.commit-info.outputs.env_cluster_names)}}
-        cluster_env: [ egdp-dev, egdp-test ]
+        cluster_env: [${{ needs.commit-info.outputs.env_cluster_names }}]
     environment:
       name: ${{ matrix.cluster_env }}
     steps:
