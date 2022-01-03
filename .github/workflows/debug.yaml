@@ -99,7 +99,7 @@ jobs:
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
       - name: Echo the matrix
         run: |
-          echo "Env matrix is: ${{ matrix.example }}
+          echo "Env matrix is: ${{ matrix.example }}"
   
   new-cluster-dev:
     needs: [ directories, commit-info ]
