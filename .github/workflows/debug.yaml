@@ -78,6 +78,7 @@ jobs:
       envi_name: ${{ steps.install_env.outputs.env_name }}
       cluster_name: ${{ steps.generate_cluster_name.outputs.cluster }}
       is_cluster_name_generated: ${{ steps.is_generated.outputs.generated }}
+      env_cluster_names: ${{ steps.env_name_debug.outputs.env_names }}
 
     steps:
       - name: Checkout
@@ -126,9 +127,9 @@ jobs:
     needs: [ commit-info ]
     strategy:
       matrix:
-        env_example: ${{ needs.commit-info.outputs.env_names }}
+        cluster_env: ${{fromJson(needs.commit-info.outputs.env_cluster_names)}}
     environment:
-      name: ${{ matrix.env_example }}
+      name: ${{ matrix.cluster_env }}
     steps:
     # Checkout task
     - name: Checkout
