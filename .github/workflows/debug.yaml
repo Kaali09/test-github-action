@@ -21,9 +21,6 @@ jobs:
   directories:
     #  if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        example: ${{fromJson(steps.clusters.outputs.new-all)}}
 
     outputs:
       new-all: ${{ steps.clusters.outputs.new-all }}
@@ -74,6 +71,9 @@ jobs:
     name: Gathering commit information
     runs-on: ubuntu-latest
     if: ${{ needs.directories.outputs.new-all != '[]' }}
+    strategy:
+      matrix:
+        example: ${{fromJson(needs.directories.outputs.new-all)}}
     outputs:
       envi_name: ${{ steps.install_env.outputs.env_name }}
       cluster_name: ${{ steps.generate_cluster_name.outputs.cluster }}
@@ -99,7 +99,7 @@ jobs:
           echo "Checking var: ${{ steps.install_env.outputs.env_name }}"
       - name: Echo the matrix
         run: |
-          echo "Env matrix is: ${{ needs.directories.matrix.example }}
+          echo "Env matrix is: ${{ matrix.example }}
   
   new-cluster-dev:
     needs: [ directories, commit-info ]
