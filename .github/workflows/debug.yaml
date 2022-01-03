@@ -113,13 +113,16 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       always() &&
-      contains( needs.directories.outputs.new-dev, 'egdp-dev' )
+      contains( needs.directories.outputs.new-all, 'egdp-dev' )
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: debug vars
         run: echo cluster env is ==> ${{ needs.commit-info.outputs.envi_name }}
+      - name: debug matrix
+        run: echo "final matrix: ${{ needs.directories.outputs.env_cluster_names }}"
+
 
   provisionDev:
     name: Provision ${{ matrix.env_example }}
