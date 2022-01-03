@@ -101,7 +101,7 @@ jobs:
         id: env_name_debug
         run: |
           echo "Env matrix is: ${{ matrix.example }}"
-          echo "::set-output name=env_names::$(awk -F'/' '{print $1}' ${{ matrix.example }})"
+          echo "::set-output name=env_names::$(echo ${{ matrix.example }} | awk -F'/' '{print $1}')"
       - name: echo env_names var
         run: |
           echo "Env_names are: ${{ steps.env_name_debug.outputs.env_names }}"
