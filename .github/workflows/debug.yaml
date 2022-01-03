@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: ${{fromJson(steps.outputs.new-all)}}
+        example: ${{fromJson(steps.clusters.outputs.new-all)}}
 
     outputs:
       new-all: ${{ steps.clusters.outputs.new-all }}
