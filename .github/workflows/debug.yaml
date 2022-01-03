@@ -126,7 +126,7 @@ jobs:
 
 
   provisionDev:
-    name: Provision ${{ matrix.env_example }}
+    name: Provision ${{ matrix.cluster_env }}
     runs-on: ubuntu-latest
     needs: [ directories, commit-info ]
     strategy:
