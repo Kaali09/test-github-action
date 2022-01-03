@@ -121,7 +121,8 @@ jobs:
       - name: debug vars
         run: echo cluster env is ==> ${{ needs.commit-info.outputs.envi_name }}
       - name: debug matrix
-        run: echo "final matrix: ${{ needs.directories.outputs.env_cluster_names }}"
+        run: |
+          echo "final matrix: ${{ needs.commit-info.outputs.env_cluster_names }}"
 
 
   provisionDev:
