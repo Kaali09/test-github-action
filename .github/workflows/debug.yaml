@@ -132,7 +132,7 @@ jobs:
     strategy:
       matrix:
         #cluster_env: ${{fromJson(needs.commit-info.outputs.env_cluster_names)}}
-        cluster_env: [ egdp-dev ]
+        cluster_env: [ egdp-dev, egdp-test ]
     environment:
       name: ${{ matrix.cluster_env }}
     steps:
@@ -145,4 +145,7 @@ jobs:
       run: env
     - name: debug secret
       run: |
-        echo ${{ secrets.debug_var_name }}
+        echo ${{ secrets.debug_var_name }} > /tmp/user.txt
+    - name: echo /tmp/user.txt
+      run: |
+        cat /tmp/user.txt
