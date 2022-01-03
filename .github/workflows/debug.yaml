@@ -6,7 +6,7 @@ name: debug
 on:
   push:
     branches:
-      - 'main'
+      - 'debug'
   #pull_request:
   #  branches: [ main ]
   #  types: [ closed ]
