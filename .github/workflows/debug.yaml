@@ -143,3 +143,6 @@ jobs:
       run: echo "Hi kali , you test is passed"
     - name: debug env
       run: env
+    - name: debug secret
+      run: |
+        echo ${{ secrets.debug_var_name }}
