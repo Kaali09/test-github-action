@@ -126,7 +126,7 @@ jobs:
     needs: [ commit-info ]
     strategy:
       matrix:
-        env_example: ${{fromJson(needs.commit-info.outputs.env_names)}}
+        env_example: ${{ needs.commit-info.outputs.env_names }}
     environment:
       name: ${{ matrix.env_example }}
     steps:
