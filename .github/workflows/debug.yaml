@@ -131,7 +131,8 @@ jobs:
     needs: [ directories, commit-info ]
     strategy:
       matrix:
-        cluster_env: ${{fromJson(needs.commit-info.outputs.env_cluster_names)}}
+        #cluster_env: ${{fromJson(needs.commit-info.outputs.env_cluster_names)}}
+        cluster_env: [ egdp-dev ]
     environment:
       name: ${{ matrix.cluster_env }}
     steps:
