@@ -9,3 +9,4 @@ jobs:
       - name: Pause for 25 seconds
         run: |
           sleep 25
+          slee 10
