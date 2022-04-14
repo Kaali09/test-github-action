@@ -1,20 +1,11 @@
-# This is an example of using Composite Run Steps Actions
-
-name: CompositeExample
-
-on: [workflow_dispatch]
-
+name: Main
+on:
+  workflow_dispatch
 jobs:
-  copy_files_job:
+  build:
     runs-on: ubuntu-latest
-    name: CompositeAction Test
     steps:
-    - uses: actions/checkout@v2
-    - id: myCompositeAction
-      uses: kaali09/test-github-action@main
-      with:
-        destinationFolder: '/whatever/folder'
-    - run: echo Files copied ${{ steps.myCompositeAction.outputs.copied-files }}
-      shell: bash
-    - run: echo cluster env  ${{ steps.myCompositeAction.outputs.newall }}
-      shell: bash
+      - uses: actions/checkout@master
+      - name: Pause for 25 seconds
+        run: |
+          sleep 25
